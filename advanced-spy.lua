@@ -171,7 +171,7 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 		SettingsPanel.Visible = true
 		ChatLog.Visible = false
 	end
-end
+end)
 
 MessageTimeoutBox.FocusLost:Connect(function()
 	local input = tonumber(MessageTimeoutBox.Text)
@@ -182,7 +182,7 @@ MessageTimeoutBox.FocusLost:Connect(function()
 		MessageTimeoutBox.Text = "5"
 		Message.MessageTimeout = 5
 	end
-end
+end)
 
 local function PlayerAdded(plr)
 	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
