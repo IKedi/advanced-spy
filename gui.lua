@@ -22,6 +22,7 @@ module.WhisperOnlyCheckBox = Instance.new("ImageButton")
 
 module.AdvancedSpy.Name = "Fakt_AdvancedSpy"
 module.AdvancedSpy.Parent = game:GetService("CoreGui")
+module.AdvancedSpy.Enabled = false
 module.AdvancedSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 module.AdvancedSpy.ResetOnSpawn = false
 
