@@ -46,11 +46,11 @@ module.ChildAddedEvent = chat.ChildAdded:Connect(function(msgobject)
 
 		local filteredMessage = msgobject.TextLabel.Text:gsub(" ", "")
 		local array = chatArray[filteredName]
-		
+
 		if array == nil then
 			array = {}
 		end
-		
+
 		table.insert(array, filteredMessage)
 		chatArray[filteredName] = array
 	end
@@ -59,22 +59,22 @@ end)
 module.IsPublic = function(plr, msg)
 	repeat RunService.RenderStepped:Wait()
 	until not chatLoading
-	
+
 	local StartTime = tick()
 	local found = false
-	
+
 	local ca_msg = chatArray[plr.DisplayName]
 	local g_msg = msg:gsub(" ", "")
-	
+
 	chatLoading = true --So we dont have to add wait() in front of this function
 
 	repeat --TBH i don't know how necessary this is but yeah i wrote this part like 2 days ago
 		RunService.RenderStepped:Wait() --and i won't remove it just in case the one on the top doesnt cover this
-		
+
 		if ca_msg[#ca_msg] == g_msg then
 			found = true
 		end
-		
+
 	until (tick() - StartTime) > module.MessageTimeout or found
 
 	return found
