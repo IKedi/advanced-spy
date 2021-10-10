@@ -20,7 +20,7 @@ module.WOCSETTING = Instance.new("TextLabel")
 module.WhisperOnlyCheckBox = Instance.new("ImageButton")
 
 Fakt_AdvancedSpy.Name = "Fakt_AdvancedSpy"
-Fakt_AdvancedSpy.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Fakt_AdvancedSpy.Parent = game:GetService("CoreGui")
 Fakt_AdvancedSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Fakt_AdvancedSpy.ResetOnSpawn = false
 
