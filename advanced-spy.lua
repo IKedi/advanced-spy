@@ -17,7 +17,7 @@ local function KillGui()
 			end)
 		end
 	end
-	
+
 	Gui.AdvancedSpy:Destroy()
 end
 
@@ -37,11 +37,11 @@ local function ToggleGui()
 		Gui.ExtraPanel.Visible = false
 		Gui.SettingsPanel.Visible = false
 		Gui.ChatLog.Visible = true
-		
+
 		ClosedState = 1
 	elseif ClosedState == 1 then
 		Gui.AdvancedSpy.Enabled = false
-		
+
 		ClosedState = 2
 	else
 		Gui.Main.BackgroundTransparency = 0.3
@@ -50,9 +50,9 @@ local function ToggleGui()
 		Gui.SearchBox.BackgroundTransparency = 0.3
 
 		Gui.ExtraPanel.Visible = true
-		
+
 		Gui.AdvancedSpy.Enabled = true
-		
+
 		ClosedState = 0
 	end
 end
@@ -114,16 +114,18 @@ local function CreateMsgObject(plr, msg, ispublic)
 		SetCamera()
 	end)
 
-	ChatObject.Parent = ChatLog
+	ChatObject.Parent = Gui.ChatLog
 	Gui.ChatLog.CanvasPosition = Vector2.new(0, 9999999999) -- waah
 end
 
 local function Chatted(plr, msg)
-	if WhisperDetectionCheckBox:GetAttribute("Checked") then
+	if Gui.WhisperDetectionCheckBox:GetAttribute("Checked") then
 		local public = Message.IsPublic(plr, msg)
 
-		if WhisperOnlyCheckBox:GetAttribute("Checked") and not public then
-			CreateMsgObject(plr, msg, public)
+		if Gui.WhisperOnlyCheckBox:GetAttribute("Checked") then
+			if not public then
+				CreateMsgObject(plr, msg, false)
+			end
 		else
 			CreateMsgObject(plr, msg, public)
 		end
@@ -164,22 +166,22 @@ Gui.SearchBox.FocusLost:Connect(function(Enter)
 end)
 
 Gui.SettingsButton.MouseButton1Click:Connect(function()
-	if SettingsPanel.Visible then
-		SettingsPanel.Visible = false
-		ChatLog.Visible = true
+	if Gui.SettingsPanel.Visible then
+		Gui.SettingsPanel.Visible = false
+		Gui.ChatLog.Visible = true
 	else
-		SettingsPanel.Visible = true
-		ChatLog.Visible = false
+		Gui.SettingsPanel.Visible = true
+		Gui.ChatLog.Visible = false
 	end
 end)
 
-MessageTimeoutBox.FocusLost:Connect(function()
-	local input = tonumber(MessageTimeoutBox.Text)
+Gui.MessageTimeoutBox.FocusLost:Connect(function()
+	local input = tonumber(Gui.MessageTimeoutBox.Text)
 
 	if input ~= nil then
 		Message.MessageTimeout = input
 	else
-		MessageTimeoutBox.Text = "5"
+		Gui.MessageTimeoutBox.Text = "5"
 		Message.MessageTimeout = 5
 	end
 end)
