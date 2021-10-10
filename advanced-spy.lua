@@ -1,8 +1,8 @@
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
-local Gui = loadstring(game:HttpGet(""))()
-local Message = loadstring(game:HttpGet(""))()
+local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/main/gui.lua"))()
+local Message = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/main/message.lua"))()
 
 local PlrNum = 1
 local ClosedState = 1 --2 fully open, 0 semi open, 1 closed
