@@ -66,7 +66,7 @@ module.IsPublic = function(plr, msg)
 	local ca_msg = chatArray[plr.DisplayName]
 	local g_msg = msg:gsub(" ", "")
 	
-	chatLoading = true --So we dont have to add wait() in front of this function
+	chatLoading = true --So we don't have to add wait() in front of this function
 
 	repeat --TBH i don't know how necessary this is but yeah i wrote this part like 2 days ago
 		RunService.RenderStepped:Wait() --and i won't remove it just in case the one on the top doesnt cover this
