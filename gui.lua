@@ -176,7 +176,6 @@ module.WhisperDetectionCheckBox.Position = UDim2.new(1.05635023, 0, 0.150886625,
 module.WhisperDetectionCheckBox.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
 module.WhisperDetectionCheckBox.Image = "rbxassetid://5465668842"
 module.WhisperDetectionCheckBox.ImageTransparency = 1.000
-module.WhisperDetectionCheckBox:SetAttribute("Checked", true)
 
 module.MTSETTING.Name = "MTSETTING"
 module.MTSETTING.Parent = module.SettingsPanel

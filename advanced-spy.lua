@@ -130,7 +130,11 @@ local function Chatted(plr, msg)
 			CreateMsgObject(plr, msg, public)
 		end
 	else
-		CreateMsgObject(plr, msg, true)
+		if string.sub(msg, 1, 1):match('%p') and string.sub(msg, 2, 2):match('%a') and string.len(msg) >= 5 then
+			CreateMsgObject(plr, msg, false)
+		else
+			CreateMsgObject(plr, msg, true)
+		end
 	end
 end
 
