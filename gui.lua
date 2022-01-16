@@ -120,6 +120,7 @@ module.Autofill.TextScaled = true
 module.Autofill.TextSize = 14.000
 module.Autofill.TextStrokeTransparency = 0.000
 module.Autofill.TextWrapped = true
+module.Autofill.TextXAlignment = Enum.TextXAlignment.Left
 
 module.SearchBox.Name = "SearchBox"
 module.SearchBox.Parent = module.Autofill
@@ -137,6 +138,7 @@ module.SearchBox.TextScaled = true
 module.SearchBox.TextSize = 14.000
 module.SearchBox.TextStrokeTransparency = 0.000
 module.SearchBox.TextWrapped = true
+module.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
 
 module.ExtraPanel.Name = "ExtraPanel"
 module.ExtraPanel.Parent = module.Main

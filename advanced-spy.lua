@@ -1,13 +1,15 @@
+local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/main/gui.lua"))()
+
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
-
-local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/main/gui.lua"))()
-local Message = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/main/message.lua"))()
 
 local PlrNum = 1
 local ClosedState = 1 --2 fully open, 0 semi open, 1 closed
 
 local EventBindings = {}
+local PlayerList = {}
+
+local filled = nil
 
 local function KillGui()
 	for i, v in ipairs(EventBindings) do
@@ -15,6 +17,8 @@ local function KillGui()
 			pcall(function()
 				v:Disconnect()
 			end)
+
+			v = nil
 		end
 	end
 
@@ -32,7 +36,7 @@ local function ToggleGui()
 		Gui.Main.BackgroundTransparency = 1
 		Gui.Next.BackgroundTransparency = 1
 		Gui.Previous.BackgroundTransparency = 1
-		Gui.SearchBox.BackgroundTransparency = 1
+		Gui.Autofill.BackgroundTransparency = 1
 
 		Gui.ExtraPanel.Visible = false
 		Gui.SettingsPanel.Visible = false
@@ -47,7 +51,7 @@ local function ToggleGui()
 		Gui.Main.BackgroundTransparency = 0.3
 		Gui.Next.BackgroundTransparency = 0.2
 		Gui.Previous.BackgroundTransparency = 0.2
-		Gui.SearchBox.BackgroundTransparency = 0.3
+		Gui.Autofill.BackgroundTransparency = 0.3
 
 		Gui.ExtraPanel.Visible = true
 
@@ -63,49 +67,73 @@ local function KeyPressed(input)
 	end
 end
 
+local function AutoFill(input)
+	local FullNameList = {}
+
+	for Name, DisplayName in pairs(PlayerList) do
+		table.insert(FullNameList, Name)
+		table.insert(FullNameList, DisplayName)
+	end
+
+	for i, Name in ipairs(FullNameList) do
+		if Gui.SearchBox.Text:lower() == Name:sub(1, Gui.SearchBox.Text:len()):lower() then
+			filled = Name
+		end
+	end
+end
+
 -----[[CAMERA]]-----
-
 local function SetCamera()
-	for i, v in ipairs(Players:GetPlayers()) do
+	for i, plr in ipairs(Players:GetPlayers()) do
 		if i == PlrNum then
-			Gui.SearchBox.Text = v.Name
+			Gui.SearchBox.Text = plr.Name
+			workspace.Camera.CameraSubject = plr.Character.Humanoid
 
-			workspace.Camera.CameraSubject = v.Character.Humanoid
+			local BoundFunction = EventBindings.BoundFunction
 
-			local BoundFunction =  EventBindings.BoundFunction
+			if BoundFunction ~= nil then EventBindings.BoundFunction:Disconnect() end
+			BoundFunction = plr.Character.Humanoid.Died:Connect(function()
+				plr.CharacterAdded:Wait()
 
-			if BoundFunction ~= nil then BoundFunction:Disconnect() end
-			BoundFunction = v.Character.Humanoid.Died:Connect(function()
-				PlrNum = 1
-				SetCamera()
+				if BoundFunction == EventBindings.BoundFunction then --If player changes player during Wait()
+					PlrNum = i
+					SetCamera()
+				end
 			end)
 
+			EventBindings.BoundFunction = BoundFunction
 			break
 		end
 	end
 end
 
-local function SetPN(Name)
-	for i, v in ipairs(Players:GetPlayers()) do
-		if v.Name == Name then
+local function SetPN(Input)
+	local i = 1
+
+	for Name, DisplayName in pairs(PlayerList) do
+		if Name == Input or DisplayName == Input then
 			PlrNum = i
 			SetCamera()
 			break
 		end
+
+		i += 1
 	end
+
+	return         
 end
 
 -----[[LOG CHAT]]-----
 
-local function CreateMsgObject(plr, msg, ispublic)
+local function CreateMsgObject(plr, msg, color)
 	local ChatObject = Gui.ChatText:Clone()
 
 	local Text = string.format([[<font color= "rgb(225, 255, 10)">[%s]</font>: ]], plr.Name)
 
-	if ispublic then
-		ChatObject.Text = Text..msg
+	if color then
+		ChatObject.Text = Text..string.format([[<font color= "rgb(%s)">%s</font>]], tostring(color), msg)
 	else
-		ChatObject.Text = Text..string.format([[<font color= "rgb(255, 100, 100)">%s</font>]], msg)
+		ChatObject.Text = Text..msg
 	end
 
 	ChatObject.MouseButton1Click:Connect(function()
@@ -119,22 +147,12 @@ local function CreateMsgObject(plr, msg, ispublic)
 end
 
 local function Chatted(plr, msg)
-	if Gui.WhisperDetectionCheckBox:GetAttribute("Checked") then
-		local public = Message.IsPublic(plr, msg)
+	local a = string.sub(msg, 1, 1):match('%p') and string.sub(msg, 2, 2):match('%a') and string.len(msg) >= 5
 
-		if Gui.WhisperOnlyCheckBox:GetAttribute("Checked") then
-			if not public then
-				CreateMsgObject(plr, msg, false)
-			end
-		else
-			CreateMsgObject(plr, msg, public)
-		end
+	if a then--and module.RoleplayEmphasizer:GetAttribute("Checked") == true then
+		CreateMsgObject(plr, msg, Color3.new(255, 0, 0))
 	else
-		if string.sub(msg, 1, 1):match('%p') and string.sub(msg, 2, 2):match('%a') and string.len(msg) >= 5 then
-			CreateMsgObject(plr, msg, false)
-		else
-			CreateMsgObject(plr, msg, true)
-		end
+		CreateMsgObject(plr, msg)
 	end
 end
 
@@ -154,18 +172,23 @@ Gui.Next.MouseButton1Down:Connect(function()
 	end
 end)
 
+Gui.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+	if (Gui.SearchBox.Text == "" or Gui.SearchBox.Text == " ") then
+		Gui.Autofill.Text = ""
+	else
+		AutoFill(Gui.SearchBox.Text)
+		Gui.Autofill.Text = Gui.SearchBox.Text..filled:sub(#Gui.SearchBox.Text + 1)
+	end
+end)
+
 Gui.SearchBox.FocusLost:Connect(function(Enter)
 	if not Enter then return;end
-	if Gui.SearchBox.Text == "" then
-		workspace.Camera.CameraSubject = Players.LocalPlayer.Character.Humanoid
-	end
 
-	local matches = {}
-
-	for i, v in pairs(Players:GetPlayers()) do
-		if Gui.SearchBox.Text:lower() == v.Name:sub(1, Gui.SearchBox.Text:len()):lower() then
-			SetPN(v.Name)
-		end
+	if (Gui.SearchBox.Text == "" or Gui.SearchBox.Text == " ") then
+		PlrNum = 1
+		SetCamera()
+	else
+		SetPN(filled)
 	end
 end)
 
@@ -178,33 +201,31 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 		Gui.ChatLog.Visible = false
 	end
 end)
-
-Gui.MessageTimeoutBox.FocusLost:Connect(function()
-	local input = tonumber(Gui.MessageTimeoutBox.Text)
-
-	if input ~= nil then
-		Message.MessageTimeout = input
-	else
-		Gui.MessageTimeoutBox.Text = "5"
-		Message.MessageTimeout = 5
-	end
-end)
-
 local function PlayerAdded(plr)
 	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
 		Chatted(plr, msg)
 	end)
+
+	PlayerList[plr.Name] = plr.DisplayName
+end
+local function PlayerRemoving(plr)
+	EventBindings["Log_"..plr.Name]:Disconnect()
+	EventBindings["Log_"..plr.Name] = nil
+
+	PlayerList[plr.Name] = nil --If we don't do this they will still appear on autofill thingy
 end
 
 for _, plr in ipairs(Players:GetPlayers()) do
 	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
 		Chatted(plr, msg)
 	end)
+
+	PlayerList[plr.Name] = plr.DisplayName
 end
 
-EventBindings.mmCA = Message.ChildAddedEvent
 EventBindings.cgCD = game:GetService("CoreGui").ChildAdded:Connect(CheckNewGui)
 EventBindings.uisIB = UserInputService.InputBegan:Connect(KeyPressed)
 EventBindings.pPA = Players.PlayerAdded:Connect(PlayerAdded)
+EventBindings.pPR = Players.PlayerRemoving:Connect(PlayerRemoving)
 
 ToggleGui()
