@@ -108,16 +108,16 @@ local function SetCamera()
 end
 
 local function SetPN(Input)
-	local i = 1
-
 	for Name, DisplayName in pairs(PlayerList) do
 		if Name == Input or DisplayName == Input then
-			PlrNum = i
-			SetCamera()
-			break
+			for i, v in ipairs(Players:GetPlayers()) do
+				if v.Name == Name then
+					PlrNum = i
+					SetCamera()
+					break
+				end
+			end
 		end
-
-		i += 1
 	end
 
 	return         
