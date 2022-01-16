@@ -189,7 +189,7 @@ module.RoleplayEmphasizer.Position = UDim2.new(1.05635023, 0, 0.150886625, 0)
 module.RoleplayEmphasizer.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
 module.RoleplayEmphasizer.Image = "rbxassetid://5465668842"
 module.RoleplayEmphasizer.ImageTransparency = 1.000
-module.RoleplayEmphasizerv:SetAttribute("Checked", true)
+module.RoleplayEmphasizer:SetAttribute("Checked", true)
 
 --[[TEXTBOX SETTING]]--
 
