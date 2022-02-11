@@ -230,35 +230,35 @@ module.RoleplayEmphasizer:SetAttribute("Checked", true)
 -- module.MessageTimeoutBox.TextStrokeTransparency = 0.000
 -- module.MessageTimeoutBox.TextWrapped = true
 
---[[Settings]]--
+--[[Functions and stuff]]--
+
 local oldSaveData = {}
 local saveData = {}
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
 	if writefile == nil then return;end
-	
-	for i, v in pairs(saveData) do
-		print(i, v)
-	end
-	print'---'
-	for i, v in pairs(oldSaveData) do
-		print(i, v)
-	end
 
-	local cb, t = pcall(function()
+	local function len(t) --definitely didn't just copy from devforum 
+		local n = 0
+	
+		for _ in pairs(t) do
+			n = n + 1
+		end
+		return n
+	end
+	
+	pcall(function()
 		local changed = false
 
-		if #oldSaveData == #saveData then
-			for setting, value in pairs(oldSaveData) do
-				if saveData[setting] ~= value then
-					print("- changed")
+		if len(oldSaveData) == len(saveData) then --#var doesn't work on libraries
+			for setting, value in pairs(saveData) do
+				if oldSaveData[setting] ~= value then
 					changed = true
 					break
 				end
 			end
 		else
-			print("- changed cuz not same lenght")
 			changed = true
 		end
 	
@@ -267,8 +267,6 @@ module.save = function()
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
 		end
 	end)
-
-	print(cb, t)
 end
 
 module.load = function()
@@ -304,6 +302,8 @@ module.load = function()
 		end
 	end
 end
+
+--[[Settings]]--
 
 for i, v in ipairs(module.settingsObjects) do
 	if v:IsA("ImageButton") and v:GetAttribute("Checked") ~= nil then --CheckBox
