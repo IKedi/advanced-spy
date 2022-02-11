@@ -3,7 +3,7 @@ Gui.load() --Loads save file thingy, i should move this to the gui module
 
 local deletdis = game.CoreGui["Fakt_AdvancedSpy"]
 if deletdis then
-	deletdis:Destroy()
+	deletdis:Destroy() --lulw
 end
 
 local UserInputService = game:GetService("UserInputService")
