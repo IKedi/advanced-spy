@@ -237,6 +237,7 @@ local saveData = {}
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
+	print'saving'
 	if writefile == nil then return;end
 
 	local function len(t) --definitely didn't just copy from devforum 
@@ -264,6 +265,7 @@ module.save = function()
 	
 		if changed then
 			oldSaveData = saveData
+			print'save success'
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
 		end
 	end)
@@ -321,10 +323,6 @@ for i, v in ipairs(module.settingsObjects) do
 
 		v.MouseButton1Click:Connect(function()
 			v:SetAttribute("Checked", not v:GetAttribute("Checked"))
-			SetCheckBox()
-		end)
-
-		v.Changed:Connect(function()
 			SetCheckBox()
 		end)
 
