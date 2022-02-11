@@ -1,7 +1,7 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/master/gui.lua"))()
 Gui.load() --Loads save file thingy, i should move this to the gui module
 
-local deletdis = game.CoreGui["Fakt_AdvancedSpy"]
+local deletdis = game.CoreGui:FindFirstChild("Fakt_AdvancedSpy")
 if deletdis then
 	deletdis:Destroy() --lulw
 end
