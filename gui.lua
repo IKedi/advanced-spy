@@ -258,7 +258,7 @@ module.save = function()
 end
 
 module.load = function()
-	if readfile == nil then return;end
+	if readfile == nil and not isfile("FaktAdvancedSpySettings.json") then return;end
 	local decoded = nil
 
 	local success, errstr = pcall(function()
