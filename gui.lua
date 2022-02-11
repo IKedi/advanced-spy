@@ -315,6 +315,8 @@ for i, v in ipairs(module.settingsObjects) do
 			end
 
 			saveData[v.Name] = v:GetAttribute("Checked")
+
+			print("fakt: ",saveData[v.Name])
 		end
 
 		v.MouseButton1Click:Connect(function()
