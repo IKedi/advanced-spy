@@ -1,5 +1,4 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/main/gui.lua"))()
-local 
 
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
@@ -156,7 +155,7 @@ end
 local function Chatted(plr, msg)
 	local a = string.sub(msg, 1, 1):match('%p') and string.sub(msg, 2, 2):match('%a') and string.len(msg) >= 5
 
-	if a then--and module.RoleplayEmphasizer:GetAttribute("Checked") == true then
+	if a and module.RoleplayEmphasizer:GetAttribute("Checked") == true then
 		CreateMsgObject(plr, msg, Color3.new(255, 0, 0))
 	else
 		CreateMsgObject(plr, msg)
