@@ -1,7 +1,10 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/master/gui.lua"))()
 Gui.load() --Loads save file thingy, i should move this to the gui module
 
-game.CoreGui["Fakt_AdvancedSpy"]:Destroy() --Delet dis
+local deletdis = game.CoreGui["Fakt_AdvancedSpy"]
+if deletdis then
+	deletdis:Destroy()
+end
 
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
