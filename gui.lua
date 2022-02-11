@@ -236,11 +236,17 @@ local saveData = {}
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
-	print("save?")
 	if writefile == nil then return;end
-	print"yes daddy"
+	
+	for i, v in pairs(saveData) do
+		print(i, v)
+	end
+	print'---'
+	for i, v in pairs(oldSaveData) do
+		print(i, v)
+	end
 
-	pcall(function()
+	local cb, t = pcall(function()
 		local changed = false
 
 		if #oldSaveData == #saveData then
@@ -261,6 +267,8 @@ module.save = function()
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
 		end
 	end)
+
+	print(cb, t)
 end
 
 module.load = function()
