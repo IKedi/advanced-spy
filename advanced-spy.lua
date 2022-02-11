@@ -1,4 +1,5 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/master/gui.lua"))()
+Gui.load()
 
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")

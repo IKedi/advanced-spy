@@ -301,7 +301,6 @@ for i, v in ipairs(module.settingsObjects) do
 			end
 
 			saveData[v.Name] = v:GetAttribute("Checked")
-			save()
 		end
 
 		v.MouseButton1Click:Connect(function()
