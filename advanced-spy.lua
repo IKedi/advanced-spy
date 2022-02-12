@@ -154,7 +154,7 @@ local function CreateMsgObject(plr, msg, color)
 	ChatLogSize += ChatObject.Size.Y.Offset
 	ChatObject.Parent = Gui.ChatLog
 
-	print(ChatLogSize, Gui.ChatLog.CanvasPosition.Y)
+	--print(ChatLogSize, Gui.ChatLog.CanvasPosition.Y)
 	Gui.ChatLog.CanvasPosition = Vector2.new(0, 9999999999) -- waah
 end
 

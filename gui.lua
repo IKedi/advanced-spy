@@ -235,7 +235,7 @@ module.RoleplayEmphasizer:SetAttribute("Checked", true)
 local oldSaveData = {}
 local saveData = {}
 
-print("debug ver 31sj")
+print("debug ver 234sj")
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
@@ -254,9 +254,17 @@ module.save = function()
 	pcall(function()
 		local changed = false
 
+		for i, v in pairs(saveData) do
+			print(i,v)
+		end
+		print'awoo'
+		for i, v in pairs(oldSaveData) do
+			print(i,v)
+		end
+
 		if len(oldSaveData) == len(saveData) then --#var doesn't work on libraries
 			for setting, value in pairs(oldSaveData) do
-				print(setting, ": ", value, " | ", saveData[setting])
+				--print(setting, ": ", saveData[setting], " | ", value)
 				if saveData[setting] ~= value then
 					changed = true
 					print'different variables'
