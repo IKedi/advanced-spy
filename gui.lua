@@ -241,8 +241,6 @@ module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
 	if writefile == nil then return;end
 
-	print(oldSaveData["RoleplayEmphasizer"])
-
 	local function len(t) --definitely didn't just copy from devforum 
 		local n = 0
 	
@@ -259,17 +257,14 @@ module.save = function()
 			for setting, value in pairs(oldSaveData) do
 				if saveData[setting] ~= value then
 					changed = true
-					print'different variables'
 					break
 				end
 			end
 		else
-			print'different lenghts'
 			changed = true
 		end
 	
 		if changed then
-			print'saved'
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
 			--oldSaveData = saveData --For some fucking reason this PERMANENTLY synchronizes it to saveData
 
