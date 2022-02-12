@@ -235,7 +235,7 @@ module.RoleplayEmphasizer:SetAttribute("Checked", true)
 local oldSaveData = {}
 local saveData = {}
 
-print("debug ver 457sj")
+print("debug ver 31sj")
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
@@ -271,7 +271,11 @@ module.save = function()
 		if changed then
 			print'saved'
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
-			--oldSaveData = saveData
+			--oldSaveData = saveData --For some fucking reason this PERMANENTLY synchronizes it to saveData
+
+			for i, _ in pairs(saveData) {
+				oldSaveData[i] = v
+			}
 		end
 	end)
 end
