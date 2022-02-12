@@ -239,7 +239,6 @@ print("debug ver 457sj")
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
-	print'saving'
 	if writefile == nil then return;end
 
 	print(oldSaveData["RoleplayEmphasizer"])
@@ -270,7 +269,7 @@ module.save = function()
 		end
 	
 		if changed then
-			print'save success'
+			print'saved'
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
 			--oldSaveData = saveData
 		end
