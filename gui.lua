@@ -239,6 +239,17 @@ local saveData = {}
 print("debug ver 86sj")
 
 module.settingsObjects = {module.RoleplayEmphasizer}
+
+module.tween = function(obj, time, tweenGoal)
+	local tweenInfo = TweenInfo.new(
+		time,
+		Enum.EasingStyle.Linear,
+		Enum.EasingDirection.Out
+	)
+
+	TweenService:Create(obj, tweenInfo, tweenGoal):Play()
+end
+
 module.save = function()
 	if writefile == nil then return;end
 

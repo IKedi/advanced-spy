@@ -155,7 +155,7 @@ local function CreateMsgObject(plr, msg, color)
 	ChatObject.Parent = Gui.ChatLog
 
 	--print(ChatLogSize, Gui.ChatLog.CanvasPosition.Y)
-	Gui.ChatLog.CanvasPosition = Vector2.new(0, 9999999999) -- waah
+	Gui.tween(Gui.ChatLog, 0.2, {["CanvasPosition"] = Vector2.new(0, 9999999999)})
 end
 
 local function Chatted(plr, msg)
