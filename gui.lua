@@ -235,7 +235,7 @@ module.RoleplayEmphasizer:SetAttribute("Checked", true)
 local oldSaveData = {}
 local saveData = {}
 
-print("debug ver 37sj")
+print("debug ver 457sj")
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
@@ -272,7 +272,7 @@ module.save = function()
 		if changed then
 			print'save success'
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
-			oldSaveData = saveData
+			--oldSaveData = saveData
 		end
 	end)
 end
