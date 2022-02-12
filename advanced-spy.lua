@@ -1,7 +1,6 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/master/gui.lua"))()
 Gui.load() --Loads save file thingy, i should move this to the gui module
 
-local curDevVer = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/IKedi/advanced-spy/commits/master"))["sha"]
 local deletdis = game.CoreGui:FindFirstChild("Fakt_AdvancedSpy")
 if deletdis then
 	deletdis:Destroy() --lulw
@@ -36,10 +35,7 @@ local function KillGui()
 end
 
 local function CheckNewGui(obj)
-	for i, v in ipairs(obj:GetDescendants()) do
-		print(v)
-	end
-	if obj:IsA("ScreenGui") and obj:FindFirstChild("Fakt_AdvancedSpy") then
+	if obj:FindFirstChild("Fakt_AdvancedSpy") and obj ~= Gui.ScrenGui then
 		KillGui()
 	end
 end
@@ -247,10 +243,3 @@ EventBindings.pPA = Players.PlayerAdded:Connect(PlayerAdded)
 EventBindings.pPR = Players.PlayerRemoving:Connect(PlayerRemoving)
 
 ToggleGui()
-
-while wait(10) do
-	if curDevVer ~= game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/IKedi/advanced-spy/commits/master"))["sha"] then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/master/advanced-spy.lua"))()
-		KillGui()
-	end
-end

@@ -1,4 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 
 local module = {}
@@ -235,7 +236,7 @@ module.RoleplayEmphasizer:SetAttribute("Checked", true)
 local oldSaveData = {}
 local saveData = {}
 
-print("debug ver 31sj")
+print("debug ver 86sj")
 
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
