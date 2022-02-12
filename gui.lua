@@ -273,9 +273,9 @@ module.save = function()
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
 			--oldSaveData = saveData --For some fucking reason this PERMANENTLY synchronizes it to saveData
 
-			for i, v in pairs(saveData) {
+			for i, v in pairs(saveData) do
 				oldSaveData[i] = v
-			}
+			end
 		end
 	end)
 end
