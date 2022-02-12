@@ -242,6 +242,8 @@ module.save = function()
 	print'saving'
 	if writefile == nil then return;end
 
+	print(oldSaveData["RoleplayEmphasizer"])
+
 	local function len(t) --definitely didn't just copy from devforum 
 		local n = 0
 	
@@ -256,7 +258,6 @@ module.save = function()
 
 		if len(oldSaveData) == len(saveData) then --#var doesn't work on libraries
 			for setting, value in pairs(oldSaveData) do
-				--print(setting, ": ", saveData[setting], " | ", value)
 				if saveData[setting] ~= value then
 					changed = true
 					print'different variables'
@@ -269,9 +270,9 @@ module.save = function()
 		end
 	
 		if changed then
-			oldSaveData = saveData
 			print'save success'
 			writefile("FaktAdvancedSpySettings.json", HttpService:JSONEncode(saveData))
+			oldSaveData = saveData
 		end
 	end)
 end
@@ -321,10 +322,7 @@ for i, v in ipairs(module.settingsObjects) do
 				v.ImageTransparency = 1
 			end
 
-			print("Changed from", saveData[v.Name], " to ", v:GetAttribute("Checked"))
 			saveData[v.Name] = v:GetAttribute("Checked")
-			print(saveData[v.Name])
-			print(oldSaveData[v.Name])
 		end
 
 		v.MouseButton1Click:Connect(function()
