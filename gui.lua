@@ -235,6 +235,8 @@ module.RoleplayEmphasizer:SetAttribute("Checked", true)
 local oldSaveData = {}
 local saveData = {}
 
+print("debug ver 31sj")
+
 module.settingsObjects = {module.RoleplayEmphasizer}
 module.save = function()
 	print'saving'
@@ -253,13 +255,16 @@ module.save = function()
 		local changed = false
 
 		if len(oldSaveData) == len(saveData) then --#var doesn't work on libraries
-			for setting, value in pairs(saveData) do
-				if oldSaveData[setting] ~= value then
+			for setting, value in pairs(oldSaveData) do
+				print(setting, ": ", value, " | ", saveData[setting])
+				if saveData[setting] ~= value then
 					changed = true
+					print'different variables'
 					break
 				end
 			end
 		else
+			print'different lenghts'
 			changed = true
 		end
 	
@@ -317,8 +322,6 @@ for i, v in ipairs(module.settingsObjects) do
 			end
 
 			saveData[v.Name] = v:GetAttribute("Checked")
-
-			print("fakt: ",saveData[v.Name])
 		end
 
 		v.MouseButton1Click:Connect(function()
