@@ -35,6 +35,9 @@ local function KillGui()
 end
 
 local function CheckNewGui(obj)
+	for i, v in ipairs(obj:GetDescendants()) do
+		print(v)
+	end
 	if obj:IsA("ScreenGui") and obj:FindFirstChild("Fakt_AdvancedSpy") then
 		KillGui()
 	end
