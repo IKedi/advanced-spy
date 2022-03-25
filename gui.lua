@@ -59,7 +59,7 @@ module.ChatText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 module.ChatText.BackgroundTransparency = 1.000
 module.ChatText.RichText = true
 module.ChatText.Size = UDim2.new(0.95, 0, 0, 18)
-module.ChatText.Font = Enum.Font.SourceSans
+module.ChatText.Font = Enum.Font.SourceSansBold
 module.ChatText.Text = "[Name]: message"
 module.ChatText.TextColor3 = Color3.fromRGB(255, 255, 255)
 module.ChatText.TextSize = 18
@@ -364,7 +364,7 @@ local NAME_COLORS = {
 	BrickColor.new("Bright orange").Color,
 	BrickColor.new("Bright yellow").Color,
 	BrickColor.new("Light reddish violet").Color,
-	BrickColor.new("Brick yellow").Color,
+	BrickColor.new("Brick yellow").Color
 }
 
 local function GetNameValue(pName)

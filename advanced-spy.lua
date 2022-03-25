@@ -1,12 +1,5 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/master/gui.lua"))()
-local AutoSize = loadstring(game:HttpGet("https://raw.githubusercontent.com/Fm-Trick/auto-canvas-size/master/AutoCanvasSize.lua"))()
 Gui.load() --Loads save file thingy, i should move this to the gui module
-AutoSize.Connect(Gui.ChatLog, true)
-
-local deletdis = game.CoreGui:FindFirstChild("Fakt_AdvancedSpy")
-if deletdis then
-	deletdis:Destroy() --lulw
-end
 
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
@@ -137,63 +130,82 @@ end
 -----[[LOG CHAT]]-----
 
 local function CalculateSize()
-	local size = gui.UIListLayout.AbsoluteContentSize.Y + 1
+	local size = Gui.UIListLayout.AbsoluteContentSize.Y + 1
 	local scroll = false
 	
-	local cl = gui.ChatLog
+	local cl = Gui.ChatLog
 	if (cl.CanvasPosition.Y - (cl.CanvasSize.Y.Offset - cl.AbsoluteSize.Y)) > -5 or (cl.CanvasSize.Y.Offset - cl.AbsoluteSize.Y) < 0 then
 		--it prob wont go under -1 even in 4k monitors but just to be safe ¯\_(ツ)_/¯
 		scroll = true
 	end
 	
-	gui.ChatLog.CanvasSize = UDim2.new(0, 0, 0, size)
+	Gui.ChatLog.CanvasSize = UDim2.new(0, 0, 0, size)
 	
 	if scroll then
-		gui.tween(gui.Chatlog, 0.1, {CanvasPosition = Vector2.new(0, size)})
+		Gui.tween(Gui.Chatlog, 0.1, {CanvasPosition = Vector2.new(0, size)})
 	end
 end
 
 local function getPlrColor(plr)
+	print(plr.Name)
 	local Color = plr.TeamColor.Color
 
 	if plr.Team == nil then
-		Color = gui.ComputeNameColor(plr.Name)
+		Color = Gui.ComputeNameColor(plr.Name)
 	end
 
-	return Color3.fromRGB(Color.R * 255, Color.G * 255, Color.B * 255)
+	return Color3.new(Color.R * 255, Color.G * 255, Color.B * 255)
 end
 
 local function CreateMsgObject(plr, msg, color)
 	local ChatObject = Gui.ChatText:Clone()
-	local ToEscape = {
-		">" = "&lt;",
-		"<" = "&gt;",
-		"\"" = "&quot;",
-		"'" = "&apos;",
-		"&" = "&amp;",
-	}
+	local EditedMessage = ""
+	local UsernameText = ""
 
-	for i, v in pairs(ToEscape) do
-		msg = msg:gsub(i, v)
+	msg = msg:gsub("<", "&lt;")
+	msg = msg:gsub(">", "&gt;")
+	msg = msg:gsub("\"", "&quot;")
+	msg = msg:gsub("'", "&apos;")
+	msg = msg:gsub("&", "&amp;")
+
+	local function ApplyText()
+		if color then
+			ChatObject.Text = UsernameText..string.format([[<font color="rgb(%s)">%s</font>]], tostring(color), EditedMessage)
+		else
+			ChatObject.Text = UsernameText..EditedMessage
+		end
 	end
 
-	for i, v in ipairs(Players:GetPlayers()) do
-		msg = msg:gsub(v.Name, ([[<font color="rgb(%s)"><b><i>%s</i></b></font>]]):format(getPlrColor(v.Name), v.Name))
-	end
-	
-	local Text = string.format([[<font color="rgb(%s)">[%s]</font>: ]], getPlrColor(plr.Name), plr.Name)
+	local function ShowName()
+		for i, v in ipairs(Players:GetPlayers()) do
+			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.Name))
+		end
+		
+		UsernameText = string.format([[<font color="rgb(%s)">[%s]</font>: ]], tostring(getPlrColor(plr)), plr.Name)
 
-	if color then
-		ChatObject.Text = Text..string.format([[<font color="rgb(%s)">%s</font>]], tostring(color), msg)
-	else
-		ChatObject.Text = Text..msg
+		ApplyText()
 	end
+
+	local function ShowDisplayName()
+		for i, v in ipairs(Players:GetPlayers()) do
+			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.DisplayName))
+		end
+		
+		UsernameText = string.format([[<font color="rgb(%s)">[%s]</font>: ]], tostring(getPlrColor(plr)), plr.DisplayName)
+
+		ApplyText()
+	end
+
+	ChatObject.MouseEnter:Connect(ShowDisplayName)
+	ChatObject.MouseLeave:Connect(ShowName)
 
 	ChatObject.MouseButton1Click:Connect(function()
 		Gui.SearchBox.Text = plr.Name
 		SetPN(plr.Name)
 		SetCamera()
 	end)
+
+	ShowName()
 
 	ChatObject:GetPropertyChangedSignal("TextBounds"):Connect(CalculateSize)
 	ChatObject.Parent = Gui.ChatLog
@@ -202,8 +214,8 @@ end
 local function Chatted(plr, msg)
 	local a = string.sub(msg, 1, 1):match('%p') and string.sub(msg, 2, 2):match('%a') and string.len(msg) >= 5
 
-	if a and module.RoleplayEmphasizer:GetAttribute("Checked") == true then
-		CreateMsgObject(plr, msg, Color3.fromRGB(255, 0, 0))
+	if a and Gui.RoleplayEmphasizer:GetAttribute("Checked") == true then
+		CreateMsgObject(plr, msg, Color3.new(255, 0, 0))
 	else
 		CreateMsgObject(plr, msg)
 	end
