@@ -136,13 +136,55 @@ end
 
 -----[[LOG CHAT]]-----
 
+local function CalculateSize()
+	local size = gui.UIListLayout.AbsoluteContentSize.Y + 1
+	local scroll = false
+	
+	local cl = gui.ChatLog
+	if (cl.CanvasPosition.Y - (cl.CanvasSize.Y.Offset - cl.AbsoluteSize.Y)) > -5 or (cl.CanvasSize.Y.Offset - cl.AbsoluteSize.Y) < 0 then
+		--it prob wont go under -1 even in 4k monitors but just to be safe ¯\_(ツ)_/¯
+		scroll = true
+	end
+	
+	gui.ChatLog.CanvasSize = UDim2.new(0, 0, 0, size)
+	
+	if scroll then
+		gui.tween(gui.Chatlog, 0.1, {CanvasPosition = Vector2.new(0, size)})
+	end
+end
+
+local function getPlrColor(plr)
+	local Color = plr.TeamColor.Color
+
+	if plr.Team == nil then
+		Color = gui.ComputeNameColor(plr.Name)
+	end
+
+	return Color3.fromRGB(Color.R * 255, Color.G * 255, Color.B * 255)
+end
+
 local function CreateMsgObject(plr, msg, color)
 	local ChatObject = Gui.ChatText:Clone()
+	local ToEscape = {
+		">" = "&lt;",
+		"<" = "&gt;",
+		"\"" = "&quot;",
+		"'" = "&apos;",
+		"&" = "&amp;",
+	}
 
-	local Text = string.format([[<font color= "rgb(225, 255, 10)">[%s]</font>: ]], plr.Name)
+	for i, v in pairs(ToEscape) do
+		msg = msg:gsub(i, v)
+	end
+
+	for i, v in ipairs(Players:GetPlayers()) do
+		msg = msg:gsub(v.Name, ([[<font color="rgb(%s)"><b><i>%s</i></b></font>]]):format(getPlrColor(v.Name), v.Name))
+	end
+	
+	local Text = string.format([[<font color="rgb(%s)">[%s]</font>: ]], getPlrColor(plr.Name), plr.Name)
 
 	if color then
-		ChatObject.Text = Text..string.format([[<font color= "rgb(%s)">%s</font>]], tostring(color), msg)
+		ChatObject.Text = Text..string.format([[<font color="rgb(%s)">%s</font>]], tostring(color), msg)
 	else
 		ChatObject.Text = Text..msg
 	end
@@ -153,18 +195,15 @@ local function CreateMsgObject(plr, msg, color)
 		SetCamera()
 	end)
 
-	ChatLogSize += ChatObject.Size.Y.Offset
+	ChatObject:GetPropertyChangedSignal("TextBounds"):Connect(CalculateSize)
 	ChatObject.Parent = Gui.ChatLog
-
-	--print(ChatLogSize, Gui.ChatLog.CanvasPosition.Y)
-	Gui.tween(Gui.ChatLog, 0.2, {["CanvasPosition"] = Vector2.new(0, 9999999999)})
 end
 
 local function Chatted(plr, msg)
 	local a = string.sub(msg, 1, 1):match('%p') and string.sub(msg, 2, 2):match('%a') and string.len(msg) >= 5
 
 	if a and module.RoleplayEmphasizer:GetAttribute("Checked") == true then
-		CreateMsgObject(plr, msg, Color3.new(255, 0, 0))
+		CreateMsgObject(plr, msg, Color3.fromRGB(255, 0, 0))
 	else
 		CreateMsgObject(plr, msg)
 	end
