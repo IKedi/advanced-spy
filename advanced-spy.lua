@@ -1,4 +1,4 @@
-local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/master/gui.lua"))()
+local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/beta/gui.lua"))()
 Gui.load() --Loads save file thingy, i should move this to the gui module
 
 local UserInputService = game:GetService("UserInputService")
