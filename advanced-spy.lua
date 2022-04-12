@@ -1,4 +1,5 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/beta/gui.lua"))()
+local ChatSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/beta/messagesystem.lua"))()
 Gui.load() --Loads save file thingy, i should move this to the gui module
 
 local UserInputService = game:GetService("UserInputService")
@@ -30,7 +31,7 @@ local function KillGui()
 end
 
 local function CheckNewGui(obj)
-	if obj:FindFirstChild("Fakt_AdvancedSpy") and obj ~= Gui.ScrenGui then
+	if obj:FindFirstChild("Fakt_AdvancedSpy") and obj ~= Gui.ScreenGui then
 		KillGui()
 	end
 end
@@ -87,10 +88,22 @@ local function AutoFill(input)
 end
 
 -----[[CAMERA]]-----
+local function SetButtonVisibility()
+	Gui.Previous.Visible = PlrNum ~= 1
+	Gui.Next.Visible = PlrNum ~= #Players:GetPlayers()
+end
+
 local function SetCamera()
+	SetButtonVisibility()
+
 	for i, plr in ipairs(Players:GetPlayers()) do
 		if i == PlrNum then
 			Gui.SearchBox.Text = plr.Name
+			
+			if not plr.Character then
+				plr.CharacterAdded:Wait()
+			end
+
 			workspace.Camera.CameraSubject = plr.Character.Humanoid
 
 			local BoundFunction = EventBindings.BoundFunction
@@ -139,15 +152,14 @@ local function CalculateSize()
 		scroll = true
 	end
 	
-	Gui.ChatLog.CanvasSize = UDim2.new(0, 0, 0, size)
+	cl.CanvasSize = UDim2.new(0, 0, 0, size)
 	
 	if scroll then
-		Gui.tween(Gui.Chatlog, 0.1, {CanvasPosition = Vector2.new(0, size)})
+		Gui.tween(cl, 0.1, {["CanvasPosition"] = Vector2.new(0, size)})
 	end
 end
 
 local function getPlrColor(plr)
-	print(plr.Name)
 	local Color = plr.TeamColor.Color
 
 	if plr.Team == nil then
@@ -162,10 +174,10 @@ local function CreateMsgObject(plr, msg, color)
 	local EditedMessage = ""
 	local UsernameText = ""
 
-	msg = msg:gsub("<", "&lt;")
-	msg = msg:gsub(">", "&gt;")
-	msg = msg:gsub("\"", "&quot;")
-	msg = msg:gsub("'", "&apos;")
+	--msg = msg:gsub("<", "&lt;")
+	--msg = msg:gsub(">", "&gt;")
+	--msg = msg:gsub("\"", "&quot;")
+	--msg = msg:gsub("'", "&apos;")
 	msg = msg:gsub("&", "&amp;")
 
 	local function ApplyText()
@@ -181,17 +193,18 @@ local function CreateMsgObject(plr, msg, color)
 			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.Name))
 		end
 		
-		UsernameText = string.format([[<font color="rgb(%s)">[%s]</font>: ]], tostring(getPlrColor(plr)), plr.Name)
+		UsernameText = string.format([[<font color="rgb(%s)">[%s]:</font> ]], tostring(getPlrColor(plr)), plr.Name)
 
 		ApplyText()
 	end
 
 	local function ShowDisplayName()
+		if Gui.DisplayNameonHover:GetAttribute("Checked") then return;end
 		for i, v in ipairs(Players:GetPlayers()) do
 			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.DisplayName))
 		end
 		
-		UsernameText = string.format([[<font color="rgb(%s)">[%s]</font>: ]], tostring(getPlrColor(plr)), plr.DisplayName)
+		UsernameText = string.format([[<font color="rgb(%s)">[%s]:</font> ]], tostring(getPlrColor(plr)), plr.DisplayName)
 
 		ApplyText()
 	end
@@ -209,16 +222,6 @@ local function CreateMsgObject(plr, msg, color)
 
 	ChatObject:GetPropertyChangedSignal("TextBounds"):Connect(CalculateSize)
 	ChatObject.Parent = Gui.ChatLog
-end
-
-local function Chatted(plr, msg)
-	local a = string.sub(msg, 1, 1):match('%p') and string.sub(msg, 2, 2):match('%a') and string.len(msg) >= 5
-
-	if a and Gui.RoleplayEmphasizer:GetAttribute("Checked") == true then
-		CreateMsgObject(plr, msg, Color3.new(255, 0, 0))
-	else
-		CreateMsgObject(plr, msg)
-	end
 end
 
 --[[EVENT HANDLERS]]--
@@ -257,6 +260,14 @@ Gui.SearchBox.FocusLost:Connect(function(Enter)
 	end
 end)
 
+Gui.ClearButton.MouseButton1Click:Connect(function()
+	for i, v in ipairs(Gui.ChatLog:GetChildren()) do
+		if v ~= Gui.UIListLayout then
+			v:Destroy()
+		end
+	end
+end)
+
 Gui.SettingsButton.MouseButton1Click:Connect(function()
 	Gui.save()
 
@@ -268,9 +279,10 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 		Gui.ChatLog.Visible = false
 	end
 end)
+
 local function PlayerAdded(plr)
 	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
-		Chatted(plr, msg)
+		ChatSystem.OnChat(plr, msg, Gui, CreateMsgObject)
 	end)
 
 	PlayerList[plr.Name] = plr.DisplayName
@@ -284,7 +296,7 @@ end
 
 for _, plr in ipairs(Players:GetPlayers()) do
 	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
-		Chatted(plr, msg)
+		ChatSystem.OnChat(plr, msg, Gui, CreateMsgObject)
 	end)
 
 	PlayerList[plr.Name] = plr.DisplayName
@@ -295,4 +307,5 @@ EventBindings.uisIB = UserInputService.InputBegan:Connect(KeyPressed)
 EventBindings.pPA = Players.PlayerAdded:Connect(PlayerAdded)
 EventBindings.pPR = Players.PlayerRemoving:Connect(PlayerRemoving)
 
+SetButtonVisibility()
 ToggleGui()
