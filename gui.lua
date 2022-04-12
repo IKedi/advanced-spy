@@ -306,7 +306,7 @@ module.WIPWhisperDetection.ImageTransparency = 0.300
 local oldSaveData = {}
 local saveData = {}
 
-module.settingsObjects = {module.RoleplayEmphasizer}
+module.settingsObjects = {module.RoleplayEmphasizer, module.DisplayNameonHover, module.WIPWhisperDetection}
 
 module.tween = function(obj, time, tweenGoal)
 	local tweenInfo = TweenInfo.new(
