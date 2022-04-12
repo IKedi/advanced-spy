@@ -238,6 +238,7 @@ module.DisplayNameonHover.Position = UDim2.new(1.05635023, 0, 0.150886625, 0)
 module.DisplayNameonHover.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
 module.DisplayNameonHover.Image = "rbxassetid://5465668842"
 module.DisplayNameonHover.ImageTransparency = 0.300
+module.DisplayNameonHover:SetAttribute("Checked", true)
 
 module.WDSETTING.Name = "WDSETTING"
 module.WDSETTING.Parent = module.SettingsPanel
@@ -265,6 +266,7 @@ module.WIPWhisperDetection.Position = UDim2.new(1.05635023, 0, 0.150886625, 0)
 module.WIPWhisperDetection.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
 module.WIPWhisperDetection.Image = "rbxassetid://5465668842"
 module.WIPWhisperDetection.ImageTransparency = 0.300
+module.WIPWhisperDetection:SetAttribute("Checked", true)
 
 --[[TEXTBOX SETTING]]--
 
