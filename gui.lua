@@ -156,7 +156,7 @@ module.ExtraPanel.Position = UDim2.new(-0.00228391169, 0, 0.831899047, 0)
 module.ExtraPanel.Size = UDim2.new(0.387767941, 0, 0.169679478, 0)
 
 module.ClearButton.Name = "ClearButton"
-module.ClearButton.Parent = game.StarterGui.a.Fakt_AdvancedSpy.ExtraPanel
+module.ClearButton.Parent = module.ExtraPanel
 module.ClearButton.BackgroundColor3 = Color3.fromRGB(55, 55, 75)
 module.ClearButton.BackgroundTransparency = 0.500
 module.ClearButton.BorderColor3 = Color3.fromRGB(45, 45, 65)
