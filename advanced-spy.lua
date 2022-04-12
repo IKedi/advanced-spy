@@ -282,7 +282,7 @@ end)
 
 local function PlayerAdded(plr)
 	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
-		ChatSystem.OnChat(plr, msg, Gui, CreateMsgObject)
+		ChatSystem.OnChat(plr, msg, CreateMsgObject, Gui)
 	end)
 
 	PlayerList[plr.Name] = plr.DisplayName
@@ -296,7 +296,7 @@ end
 
 for _, plr in ipairs(Players:GetPlayers()) do
 	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
-		ChatSystem.OnChat(plr, msg, Gui, CreateMsgObject)
+		ChatSystem.OnChat(plr, msg, CreateMsgObject, Gui)
 	end)
 
 	PlayerList[plr.Name] = plr.DisplayName
