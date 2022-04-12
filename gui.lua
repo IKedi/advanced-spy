@@ -16,10 +16,15 @@ module.Previous = Instance.new("TextButton")
 module.Autofill = Instance.new("TextLabel")
 module.SearchBox = Instance.new("TextBox")
 module.ExtraPanel = Instance.new("Frame")
+module.ClearButton = Instance.new("ImageButton")
 module.SettingsButton = Instance.new("ImageButton")
 module.SettingsPanel = Instance.new("Frame")
 module.RPESETTING = Instance.new("TextLabel")
 module.RoleplayEmphasizer = Instance.new("ImageButton")
+module.SDOHSETTING = Instance.new("TextLabel")
+module.DisplayNameonHover = Instance.new("ImageButton")
+module.WDSETTING = Instance.new("TextLabel")
+module.WIPWhisperDetection = Instance.new("ImageButton")
 
 module.ScreenGui.Name = HttpService:GenerateGUID(true)
 module.ScreenGui.Parent = game:GetService("CoreGui")
@@ -150,6 +155,17 @@ module.ExtraPanel.BackgroundTransparency = 1.000
 module.ExtraPanel.Position = UDim2.new(-0.00228391169, 0, 0.831899047, 0)
 module.ExtraPanel.Size = UDim2.new(0.387767941, 0, 0.169679478, 0)
 
+module.ClearButton.Name = "ClearButton"
+module.ClearButton.Parent = game.StarterGui.a.Fakt_AdvancedSpy.ExtraPanel
+module.ClearButton.BackgroundColor3 = Color3.fromRGB(55, 55, 75)
+module.ClearButton.BackgroundTransparency = 0.500
+module.ClearButton.BorderColor3 = Color3.fromRGB(45, 45, 65)
+module.ClearButton.BorderSizePixel = 2
+module.ClearButton.Position = UDim2.new(0.415242314, 0, 0.188999996, 0)
+module.ClearButton.Size = UDim2.new(0.205959156, 0, 0.596293747, 0)
+module.ClearButton.Image = "http://www.roblox.com/asset/?id=9348208337"
+module.ClearButton.ImageTransparency = 0.300
+
 module.SettingsButton.Name = "SettingsButton"
 module.SettingsButton.Parent = module.ExtraPanel
 module.SettingsButton.BackgroundColor3 = Color3.fromRGB(55, 55, 75)
@@ -158,7 +174,7 @@ module.SettingsButton.BorderColor3 = Color3.fromRGB(45, 45, 65)
 module.SettingsButton.BorderSizePixel = 2
 module.SettingsButton.Position = UDim2.new(0.128040045, 0, 0.188663676, 0)
 module.SettingsButton.Size = UDim2.new(0.205959156, 0, 0.596293747, 0)
-module.SettingsButton.Image = "http://www.roblox.com/asset/?id=183390139"
+module.SettingsButton.Image = "http://www.roblox.com/asset/?id=9348209662"
 module.SettingsButton.ImageTransparency = 0.300
 
 module.SettingsPanel.Name = "SettingsPanel"
@@ -195,6 +211,60 @@ module.RoleplayEmphasizer.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
 module.RoleplayEmphasizer.Image = "rbxassetid://5465668842"
 module.RoleplayEmphasizer.ImageTransparency = 1.000
 module.RoleplayEmphasizer:SetAttribute("Checked", true)
+
+module.SDOHSETTING.Name = "SDOHSETTING"
+module.SDOHSETTING.Parent = module.SettingsPanel
+module.SDOHSETTING.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+module.SDOHSETTING.BackgroundTransparency = 1.000
+module.SDOHSETTING.Position = UDim2.new(0.0447427258, 0, 0.198205128, 0)
+module.SDOHSETTING.Selectable = true
+module.SDOHSETTING.Size = UDim2.new(0.664429486, 0, 0.15367201, 0)
+module.SDOHSETTING.Font = Enum.Font.GothamSemibold
+module.SDOHSETTING.Text = "Show display name on hover:"
+module.SDOHSETTING.TextColor3 = Color3.fromRGB(220, 220, 220)
+module.SDOHSETTING.TextScaled = true
+module.SDOHSETTING.TextSize = 14.000
+module.SDOHSETTING.TextStrokeTransparency = 0.000
+module.SDOHSETTING.TextWrapped = true
+module.SDOHSETTING.TextXAlignment = Enum.TextXAlignment.Left
+
+module.DisplayNameonHover.Name = "DisplayNameonHover"
+module.DisplayNameonHover.Parent = module.SDOHSETTING
+module.DisplayNameonHover.BackgroundColor3 = Color3.fromRGB(55, 55, 75)
+module.DisplayNameonHover.BackgroundTransparency = 0.500
+module.DisplayNameonHover.BorderColor3 = Color3.fromRGB(45, 45, 65)
+module.DisplayNameonHover.BorderSizePixel = 2
+module.DisplayNameonHover.Position = UDim2.new(1.05635023, 0, 0.150886625, 0)
+module.DisplayNameonHover.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
+module.DisplayNameonHover.Image = "rbxassetid://5465668842"
+module.DisplayNameonHover.ImageTransparency = 0.300
+
+module.WDSETTING.Name = "WDSETTING"
+module.WDSETTING.Parent = module.SettingsPanel
+module.WDSETTING.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+module.WDSETTING.BackgroundTransparency = 1.000
+module.WDSETTING.Position = UDim2.new(0.0447427258, 0, 0.350036144, 0)
+module.WDSETTING.Selectable = true
+module.WDSETTING.Size = UDim2.new(0.664429486, 0, 0.15367201, 0)
+module.WDSETTING.Font = Enum.Font.GothamSemibold
+module.WDSETTING.Text = "WIP whisper detection:"
+module.WDSETTING.TextColor3 = Color3.fromRGB(220, 220, 220)
+module.WDSETTING.TextScaled = true
+module.WDSETTING.TextSize = 14.000
+module.WDSETTING.TextStrokeTransparency = 0.000
+module.WDSETTING.TextWrapped = true
+module.WDSETTING.TextXAlignment = Enum.TextXAlignment.Left
+
+module.WIPWhisperDetection.Name = "DisplayNameonHover"
+module.WIPWhisperDetection.Parent = module.WDSETTING
+module.WIPWhisperDetection.BackgroundColor3 = Color3.fromRGB(55, 55, 75)
+module.WIPWhisperDetection.BackgroundTransparency = 0.500
+module.WIPWhisperDetection.BorderColor3 = Color3.fromRGB(45, 45, 65)
+module.WIPWhisperDetection.BorderSizePixel = 2
+module.WIPWhisperDetection.Position = UDim2.new(1.05635023, 0, 0.150886625, 0)
+module.WIPWhisperDetection.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
+module.WIPWhisperDetection.Image = "rbxassetid://5465668842"
+module.WIPWhisperDetection.ImageTransparency = 0.300
 
 --[[TEXTBOX SETTING]]--
 
@@ -251,12 +321,13 @@ end
 module.save = function()
 	if writefile == nil then return;end
 
-	local function len(t) --definitely didn't just copy from devforum 
+	local function len(t)
 		local n = 0
 	
 		for _ in pairs(t) do
 			n = n + 1
 		end
+
 		return n
 	end
 	
