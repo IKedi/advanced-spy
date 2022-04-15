@@ -306,9 +306,12 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 	end
 end)
 
-local function updateChatName(plr)
+local function updateChatName(plr, leaving)
+	if leaving == nil then leaving = false;end
+
 	for i, msgObject in ipairs(log[plr.Name]) do
-		if Players:FindFirstChild(plr.Name) then --even though plr still exists it isn't in Players
+
+		if not leaving then --even though plr still exists it isn't in Players
 			name = string.format([[<font color="rgb(%s)">[%s]:</font> ]], tostring(getPlrColor(plr)), plr.Name)
 		else
 			name = string.format([[<s><font color="rgb(%s)">[%s]:</font></s> ]], tostring(getPlrColor(plr.Name)), plr.Name)
@@ -339,7 +342,7 @@ end
 local function PlayerRemoving(plr)
 	PlayerList[plr.Name] = nil --If we don't do this they will still appear on autofill thingy
 
-	updateChatName(plr)
+	updateChatName(plr, true)
 	SetButtonVisibility()
 end
 
