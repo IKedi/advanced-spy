@@ -14,6 +14,7 @@ local PlayerList = {}
 local ChatLogSize = 0
 
 local filled = nil
+local log = {}
 
 local function KillGui()
 	for event, binding in pairs(EventBindings) do
@@ -109,7 +110,7 @@ local function SetCamera()
 			local BoundFunction = EventBindings.BoundFunction
 
 			if BoundFunction ~= nil then EventBindings.BoundFunction:Disconnect() end
-			BoundFunction = plr.Character.Humanoid.Died:Connect(function()
+			BoundFunction = plr.Character.Humanoid.Died:Connect(function() --TO DO fix this
 				plr.CharacterAdded:Wait()
 
 				if BoundFunction == EventBindings.BoundFunction then --If player changes player during Wait()
@@ -160,13 +161,17 @@ local function CalculateSize()
 end
 
 local function getPlrColor(plr)
-	local Color = plr.TeamColor.Color
+	if typeof(plr) == "Instance" then
+		local Color = plr.TeamColor.Color
 
-	if plr.Team == nil then
-		Color = Gui.ComputeNameColor(plr.Name)
+		if plr.Team == nil then
+			Color = Gui.ComputeNameColor(plr.Name)
+		end
+
+		return Color3.new(Color.R * 255, Color.G * 255, Color.B * 255)
+	elseif typeof(plr) == "string" then
+		return Gui.ComputeNameColor(plr)
 	end
-
-	return Color3.new(Color.R * 255, Color.G * 255, Color.B * 255)
 end
 
 local function CreateMsgObject(plr, msg, color)
@@ -174,7 +179,9 @@ local function CreateMsgObject(plr, msg, color)
 	local EditedMessage = ""
 	local UsernameText = ""
 
-	--msg = msg:gsub("<", "&lt;")
+	log[plr.Name] = table.insert(log[plr.Name], ChatObject)
+
+	--msg = msg:gsub("<", "&lt;") --TO DO
 	--msg = msg:gsub(">", "&gt;")
 	--msg = msg:gsub("\"", "&quot;")
 	--msg = msg:gsub("'", "&apos;")
@@ -189,6 +196,7 @@ local function CreateMsgObject(plr, msg, color)
 	end
 
 	local function ShowName()
+		if not Gui.DisplayNameonHover:GetAttribute("Checked") then return;end
 		for i, v in ipairs(Players:GetPlayers()) do
 			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.Name))
 		end
@@ -199,7 +207,7 @@ local function CreateMsgObject(plr, msg, color)
 	end
 
 	local function ShowDisplayName()
-		if Gui.DisplayNameonHover:GetAttribute("Checked") then return;end
+		if not Gui.DisplayNameonHover:GetAttribute("Checked") then return;end
 		for i, v in ipairs(Players:GetPlayers()) do
 			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.DisplayName))
 		end
@@ -266,6 +274,8 @@ Gui.ClearButton.MouseButton1Click:Connect(function()
 			v:Destroy()
 		end
 	end
+
+	CalculateSize()
 end)
 
 Gui.SettingsButton.MouseButton1Click:Connect(function()
@@ -280,26 +290,56 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 	end
 end)
 
+local function updateChatName(plr)
+	for i, msgObject in ipairs(log[plr.Name]) do
+		local msg = ""
+		local name = ""
+
+		for j, split_ in ipairs(msgObject.Text:split(":")) do
+			if j ~= 1 then
+				msg = msg..split_
+
+				if j ~= #msgObject.Text:split(":") then
+					msg = msg..":"
+				end
+			end
+		end
+		
+		if Players:FindFirstChild(plr.Name) then --even though plr still exists it isn't in Players
+			name = string.format([[<font color="rgb(%s)">[%s]:</font> ]], tostring(getPlrColor(plr)), plr.Name)
+		else
+			name = string.format([[<s><font color="rgb(%s)">[%s]:</font></s> ]], tostring(getPlrColor(plr.Name)), plr.Name)
+		end
+
+		msgObject.Text = name..msg
+	end
+end
+
 local function PlayerAdded(plr)
-	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
+	if log[plr.Name] == nil then
+		log[plr.Name] = {}
+	else
+		updateChatName(plr)
+	end
+
+	plr.Chatted:Connect(function(msg)
 		ChatSystem.OnChat(plr, msg, CreateMsgObject, Gui)
 	end)
 
+	plr:GetPropertyChangedSignal("Team"):Connect(function()
+		updateChatName(plr)
+	end)
+
 	PlayerList[plr.Name] = plr.DisplayName
+	SetButtonVisibility()
 end
 local function PlayerRemoving(plr)
-	EventBindings["Log_"..plr.Name]:Disconnect()
-	EventBindings["Log_"..plr.Name] = nil
-
 	PlayerList[plr.Name] = nil --If we don't do this they will still appear on autofill thingy
+	SetButtonVisibility()
 end
 
 for _, plr in ipairs(Players:GetPlayers()) do
-	EventBindings["Log_"..plr.Name] = plr.Chatted:Connect(function(msg)
-		ChatSystem.OnChat(plr, msg, CreateMsgObject, Gui)
-	end)
-
-	PlayerList[plr.Name] = plr.DisplayName
+	PlayerAdded(plr)
 end
 
 EventBindings.cgCD = game:GetService("CoreGui").ChildAdded:Connect(CheckNewGui)
