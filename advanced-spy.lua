@@ -32,7 +32,7 @@ local function KillGui()
 end
 
 local function CheckNewGui(obj)
-	if obj:FindFirstChild("Fakt_AdvancedSpy") then
+	if obj:FindFirstChild("Fakt_AdvancedSpy") and obj ~= Gui.ScreenGui then
 		KillGui()
 	end
 end

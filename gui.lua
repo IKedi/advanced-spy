@@ -27,7 +27,6 @@ module.WDSETTING = Instance.new("TextLabel")
 module.WIPWhisperDetection = Instance.new("ImageButton")
 
 module.ScreenGui.Name = HttpService:GenerateGUID(true)
-module.ScreenGui.Parent = game:GetService("CoreGui")
 module.ScreenGui.Enabled = false
 module.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 module.ScreenGui.ResetOnSpawn = false
@@ -375,9 +374,15 @@ module.save = function()
 end
 
 module.load = function(github)
-	github = HttpService:JSONDecode(github)
-	module.betainfo.Text = "Beta, \""..github.commit.message.."\", "..github.commit.tree.sha
+	local verPass = pcall(function()
+		github = HttpService:JSONDecode(github)
+		module.betainfo.Text = "Beta, \""..github.commit.message.."\", "..github.commit.tree.sha
+	end)
 
+	if not verPass then
+		module.betainfo:Destroy()
+	end
+	
 	if readfile == nil and not isfile("FaktAdvancedSpySettings.json") then return;end
 	local decoded = nil
 
@@ -409,6 +414,8 @@ module.load = function(github)
 			module.save()
 		end
 	end
+
+	module.ScreenGui.Parent = game:GetService("CoreGui")
 end
 
 --[[Settings]]--
