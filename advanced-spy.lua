@@ -161,17 +161,21 @@ local function CalculateSize()
 end
 
 local function getPlrColor(plr)
-	if typeof(plr) == "Instance" then
-		local Color = plr.TeamColor.Color
+	local Color = nil
 
+	if typeof(plr) == "Instance" then
 		if plr.Team == nil then
 			Color = Gui.ComputeNameColor(plr.Name)
+		else
+			Color = plr.TeamColor.Color
 		end
-
-		return Color3.new(Color.R * 255, Color.G * 255, Color.B * 255)
 	elseif typeof(plr) == "string" then
-		return Gui.ComputeNameColor(plr)
+		Color = Gui.ComputeNameColor(plr)
+	else
+		return Color3.new(255, 255, 255)
 	end
+
+	return Color3.new(Color.R * 255, Color.G * 255, Color.B * 255)
 end
 
 local function CreateMsgObject(plr, msg, color)
