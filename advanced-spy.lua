@@ -32,7 +32,7 @@ local function KillGui()
 end
 
 local function CheckNewGui(obj)
-	if obj:FindFirstChild("Fakt_AdvancedSpy") and obj ~= Gui.ScreenGui then
+	if obj:FindFirstChild("Fakt_AdvancedSpy") then
 		KillGui()
 	end
 end
@@ -178,8 +178,15 @@ local function CreateMsgObject(plr, msg, color)
 	local ChatObject = Gui.ChatText:Clone()
 	local EditedMessage = ""
 	local UsernameText = ""
+	local initialized = false
 
-	log[plr.Name] = table.insert(log[plr.Name], ChatObject)
+	local logTable = log[plr.Name]
+	table.insert(logTable, {
+		instance = ChatObject,
+		message = msg
+	})
+
+	log[plr.Name] = logTable
 
 	--msg = msg:gsub("<", "&lt;") --TO DO
 	--msg = msg:gsub(">", "&gt;")
@@ -196,7 +203,7 @@ local function CreateMsgObject(plr, msg, color)
 	end
 
 	local function ShowName()
-		if not Gui.DisplayNameonHover:GetAttribute("Checked") then return;end
+		if not Gui.DisplayNameonHover:GetAttribute("Checked") and initialized then return;end
 		for i, v in ipairs(Players:GetPlayers()) do
 			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.Name))
 		end
@@ -227,6 +234,7 @@ local function CreateMsgObject(plr, msg, color)
 	end)
 
 	ShowName()
+	initialized = true
 
 	ChatObject:GetPropertyChangedSignal("TextBounds"):Connect(CalculateSize)
 	ChatObject.Parent = Gui.ChatLog
@@ -269,6 +277,14 @@ Gui.SearchBox.FocusLost:Connect(function(Enter)
 end)
 
 Gui.ClearButton.MouseButton1Click:Connect(function()
+	local newLog = {}
+
+	for i, v in ipairs(Players:GetPlayers()) do
+		newLog[v.Name] = {}
+	end
+
+	log = newLog
+
 	for i, v in ipairs(Gui.ChatLog:GetChildren()) do
 		if v ~= Gui.UIListLayout then
 			v:Destroy()
@@ -292,26 +308,13 @@ end)
 
 local function updateChatName(plr)
 	for i, msgObject in ipairs(log[plr.Name]) do
-		local msg = ""
-		local name = ""
-
-		for j, split_ in ipairs(msgObject.Text:split(":")) do
-			if j ~= 1 then
-				msg = msg..split_
-
-				if j ~= #msgObject.Text:split(":") then
-					msg = msg..":"
-				end
-			end
-		end
-		
 		if Players:FindFirstChild(plr.Name) then --even though plr still exists it isn't in Players
 			name = string.format([[<font color="rgb(%s)">[%s]:</font> ]], tostring(getPlrColor(plr)), plr.Name)
 		else
 			name = string.format([[<s><font color="rgb(%s)">[%s]:</font></s> ]], tostring(getPlrColor(plr.Name)), plr.Name)
 		end
 
-		msgObject.Text = name..msg
+		msgObject.instance.Text = name..msgObject.message
 	end
 end
 
@@ -335,6 +338,8 @@ local function PlayerAdded(plr)
 end
 local function PlayerRemoving(plr)
 	PlayerList[plr.Name] = nil --If we don't do this they will still appear on autofill thingy
+
+	updateChatName(plr)
 	SetButtonVisibility()
 end
 
