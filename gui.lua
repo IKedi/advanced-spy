@@ -303,6 +303,22 @@ module.WIPWhisperDetection:SetAttribute("Checked", true)
 -- module.MessageTimeoutBox.TextStrokeTransparency = 0.000
 -- module.MessageTimeoutBox.TextWrapped = true
 
+module.betainfo = Instance.new("TextLabel")
+
+module.betainfo.Name = "betainfo"
+module.betainfo.Parent = module.SettingsPanel
+module.betainfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+module.betainfo.BackgroundTransparency = 1.000
+module.betainfo.Position = UDim2.new(0.044742804, 0, 0.768950641, 0)
+module.betainfo.Size = UDim2.new(0.910254419, 0, 0.25, 0)
+module.betainfo.Font = Enum.Font.SourceSans
+module.betainfo.TextColor3 = Color3.fromRGB(220, 220, 220)
+module.betainfo.TextScaled = true
+module.betainfo.TextSize = 14.000
+module.betainfo.TextStrokeTransparency = 0.000
+module.betainfo.TextWrapped = true
+module.betainfo.TextXAlignment = Enum.TextXAlignment.Left
+
 --[[Functions and stuff]]--
 
 local oldSaveData = {}
@@ -358,7 +374,10 @@ module.save = function()
 	end)
 end
 
-module.load = function()
+module.load = function(github)
+	github = HttpService:JSONDecode(github)
+	betainfo.Text = "Beta, \""..github.commit.message.."\", "..github.commit.tree.sha
+
 	if readfile == nil and not isfile("FaktAdvancedSpySettings.json") then return;end
 	local decoded = nil
 

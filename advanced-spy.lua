@@ -1,6 +1,6 @@
 local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/beta/gui.lua"))()
 local ChatSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/beta/messagesystem.lua"))()
-Gui.load() --Loads save file thingy, i should move this to the gui module
+Gui.load(game:HttpGet("https://api.github.com/repos/IKedi/advanced-spy/commits/beta")) --Loads save file thingy, i should move this to the gui module
 
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
