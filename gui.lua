@@ -376,7 +376,7 @@ end
 
 module.load = function(github)
 	github = HttpService:JSONDecode(github)
-	betainfo.Text = "Beta, \""..github.commit.message.."\", "..github.commit.tree.sha
+	module.betainfo.Text = "Beta, \""..github.commit.message.."\", "..github.commit.tree.sha
 
 	if readfile == nil and not isfile("FaktAdvancedSpySettings.json") then return;end
 	local decoded = nil
