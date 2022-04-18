@@ -311,7 +311,7 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 	end
 end)
 
-Gui.TextFontSize.FosusLost:Connect(function()
+Gui.TextFontSize.FocusLost:Connect(function()
 	if Gui.TextFontSize.Text:match("%d+") == nil then return;end
 	Gui.ChatText.TextSize = tostring(Gui.TextFontSize.Text)
 
