@@ -23,8 +23,11 @@ module.RPESETTING = Instance.new("TextLabel")
 module.RoleplayEmphasizer = Instance.new("ImageButton")
 module.SDOHSETTING = Instance.new("TextLabel")
 module.DisplayNameonHover = Instance.new("ImageButton")
-module.WDSETTING = Instance.new("TextLabel")
-module.WIPWhisperDetection = Instance.new("ImageButton")
+--module.WDSETTING = Instance.new("TextLabel")
+--module.WIPWhisperDetection = Instance.new("ImageButton")
+
+module.TFSSETTING = Instance.new("TextLabel")
+module.TextFontSize = Instance.new("TextBox")
 
 module.ScreenGui.Name = HttpService:GenerateGUID(true)
 module.ScreenGui.Enabled = false
@@ -324,7 +327,7 @@ module.betainfo.TextXAlignment = Enum.TextXAlignment.Left
 local oldSaveData = {}
 local saveData = {}
 
-module.settingsObjects = {module.RoleplayEmphasizer, module.DisplayNameonHover, module.WIPWhisperDetection}
+module.settingsObjects = {module.RoleplayEmphasizer, module.DisplayNameonHover, module.TextFontSize}
 
 module.tween = function(obj, time, tweenGoal)
 	local tweenInfo = TweenInfo.new(
