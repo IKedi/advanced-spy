@@ -459,10 +459,13 @@ for i, v in ipairs(module.settingsObjects) do
 			if v:GetAttribute("NumberOnly") then
 				if v.Text:match("%d+") == nil then
 					v.Text = defaultValue
+					return
 				else
 					v.Text = v.Text:match("%d+")
 				end
 			end
+
+			saveData[v.Name] = v.Text
 		end)
 	end
 end

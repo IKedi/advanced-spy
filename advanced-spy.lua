@@ -311,8 +311,9 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 	end
 end)
 
-Gui.TextFontSize:GetPropertyChangedSignal("Text"):Connect(function()
-	if v.Text:match("%d+") == nil then return;end
+Gui.TextFontSize.FosusLost:Connect(function()
+	if Gui.TextFontSize.Text:match("%d+") == nil then return;end
+	Gui.ChatText.TextSize = tostring(Gui.TextFontSize.Text)
 
 	for i, v in ipairs(Gui.ChatLog:GetChildren()) do
 		if v ~= Gui.UIListLayout then
