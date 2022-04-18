@@ -239,68 +239,69 @@ module.DisplayNameonHover.Image = "rbxassetid://5465668842"
 module.DisplayNameonHover.ImageTransparency = 0.300
 module.DisplayNameonHover:SetAttribute("Checked", true)
 
-module.WDSETTING.Name = "WDSETTING"
-module.WDSETTING.Parent = module.SettingsPanel
-module.WDSETTING.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-module.WDSETTING.BackgroundTransparency = 1.000
-module.WDSETTING.Position = UDim2.new(0.0447427258, 0, 0.350036144, 0)
-module.WDSETTING.Selectable = true
-module.WDSETTING.Size = UDim2.new(0.664429486, 0, 0.15367201, 0)
-module.WDSETTING.Font = Enum.Font.GothamSemibold
-module.WDSETTING.Text = "WIP whisper detection:"
-module.WDSETTING.TextColor3 = Color3.fromRGB(220, 220, 220)
-module.WDSETTING.TextScaled = true
-module.WDSETTING.TextSize = 14.000
-module.WDSETTING.TextStrokeTransparency = 0.000
-module.WDSETTING.TextWrapped = true
-module.WDSETTING.TextXAlignment = Enum.TextXAlignment.Left
+-- module.WDSETTING.Name = "WDSETTING"
+-- module.WDSETTING.Parent = module.SettingsPanel
+-- module.WDSETTING.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+-- module.WDSETTING.BackgroundTransparency = 1.000
+-- module.WDSETTING.Position = UDim2.new(0.0447427258, 0, 0.350036144, 0)
+-- module.WDSETTING.Selectable = true
+-- module.WDSETTING.Size = UDim2.new(0.664429486, 0, 0.15367201, 0)
+-- module.WDSETTING.Font = Enum.Font.GothamSemibold
+-- module.WDSETTING.Text = "WIP whisper detection:"
+-- module.WDSETTING.TextColor3 = Color3.fromRGB(220, 220, 220)
+-- module.WDSETTING.TextScaled = true
+-- module.WDSETTING.TextSize = 14.000
+-- module.WDSETTING.TextStrokeTransparency = 0.000
+-- module.WDSETTING.TextWrapped = true
+-- module.WDSETTING.TextXAlignment = Enum.TextXAlignment.Left
 
-module.WIPWhisperDetection.Name = "DisplayNameonHover"
-module.WIPWhisperDetection.Parent = module.WDSETTING
-module.WIPWhisperDetection.BackgroundColor3 = Color3.fromRGB(55, 55, 75)
-module.WIPWhisperDetection.BackgroundTransparency = 0.500
-module.WIPWhisperDetection.BorderColor3 = Color3.fromRGB(45, 45, 65)
-module.WIPWhisperDetection.BorderSizePixel = 2
-module.WIPWhisperDetection.Position = UDim2.new(1.05635023, 0, 0.150886625, 0)
-module.WIPWhisperDetection.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
-module.WIPWhisperDetection.Image = "rbxassetid://5465668842"
-module.WIPWhisperDetection.ImageTransparency = 0.300
-module.WIPWhisperDetection:SetAttribute("Checked", true)
+-- module.WIPWhisperDetection.Name = "DisplayNameonHover"
+-- module.WIPWhisperDetection.Parent = module.WDSETTING
+-- module.WIPWhisperDetection.BackgroundColor3 = Color3.fromRGB(55, 55, 75)
+-- module.WIPWhisperDetection.BackgroundTransparency = 0.500
+-- module.WIPWhisperDetection.BorderColor3 = Color3.fromRGB(45, 45, 65)
+-- module.WIPWhisperDetection.BorderSizePixel = 2
+-- module.WIPWhisperDetection.Position = UDim2.new(1.05635023, 0, 0.150886625, 0)
+-- module.WIPWhisperDetection.Size = UDim2.new(0.0908832252, 0, 0.623669922, 0)
+-- module.WIPWhisperDetection.Image = "rbxassetid://5465668842"
+-- module.WIPWhisperDetection.ImageTransparency = 0.300
+-- module.WIPWhisperDetection:SetAttribute("Checked", true)
 
 --[[TEXTBOX SETTING]]--
 
--- module.MTSETTING.Name = "MTSETTING"
--- module.MTSETTING.Parent = module.SettingsPanel
--- module.MTSETTING.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
--- module.MTSETTING.BackgroundTransparency = 1.000
--- module.MTSETTING.Position = UDim2.new(0.0447427258, 0, 0.19709006, 0)
--- module.MTSETTING.Selectable = true
--- module.MTSETTING.Size = UDim2.new(0.548844337, 0, 0.15367201, 0)
--- module.MTSETTING.Font = Enum.Font.GothamSemibold
--- module.MTSETTING.Text = "Message timeout:"
--- module.MTSETTING.TextColor3 = Color3.fromRGB(220, 220, 220)
--- module.MTSETTING.TextScaled = true
--- module.MTSETTING.TextSize = 14.000
--- module.MTSETTING.TextStrokeTransparency = 0.000
--- module.MTSETTING.TextWrapped = true
--- module.MTSETTING.TextXAlignment = Enum.TextXAlignment.Left
+module.TFSSETTING.Name = "TFSSETTING"
+module.TFSSETTING.Parent = module.SettingsPanel
+module.TFSSETTING.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+module.TFSSETTING.BackgroundTransparency = 1.000
+module.TFSSETTING.Position = UDim2.new(0.0447427258, 0, 0.350036144, 0)
+module.TFSSETTING.Selectable = true
+module.TFSSETTING.Size = UDim2.new(0.548844337, 0, 0.15367201, 0)
+module.TFSSETTING.Font = Enum.Font.GothamSemibold
+module.TFSSETTING.Text = "Chat text size:"
+module.TFSSETTING.TextColor3 = Color3.fromRGB(220, 220, 220)
+module.TFSSETTING.TextScaled = true
+module.TFSSETTING.TextSize = 14.000
+module.TFSSETTING.TextStrokeTransparency = 0.000
+module.TFSSETTING.TextWrapped = true
+module.TFSSETTING.TextXAlignment = Enum.TextXAlignment.Left
 
--- module.MessageTimeoutBox.Name = "MessageTimeoutBox"
--- module.MessageTimeoutBox.Parent = module.MTSETTING
--- module.MessageTimeoutBox.BackgroundColor3 = Color3.fromRGB(35, 35, 55)
--- module.MessageTimeoutBox.BackgroundTransparency = 0.380
--- module.MessageTimeoutBox.BorderColor3 = Color3.fromRGB(27, 42, 53)
--- module.MessageTimeoutBox.BorderSizePixel = 0
--- module.MessageTimeoutBox.Position = UDim2.new(1.0460242, 0, 0.220535457, 0)
--- module.MessageTimeoutBox.Size = UDim2.new(0.446811646, 0, 0.532550573, 0)
--- module.MessageTimeoutBox.Font = Enum.Font.GothamSemibold
--- module.MessageTimeoutBox.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
--- module.MessageTimeoutBox.Text = "5"
--- module.MessageTimeoutBox.TextColor3 = Color3.fromRGB(255, 255, 255)
--- module.MessageTimeoutBox.TextScaled = true
--- module.MessageTimeoutBox.TextSize = 14.000
--- module.MessageTimeoutBox.TextStrokeTransparency = 0.000
--- module.MessageTimeoutBox.TextWrapped = true
+module.TextFontSize.Name = "TextFontSize"
+module.TextFontSize.Parent = module.TFSSETTING
+module.TextFontSize.BackgroundColor3 = Color3.fromRGB(35, 35, 55)
+module.TextFontSize.BackgroundTransparency = 0.380
+module.TextFontSize.BorderColor3 = Color3.fromRGB(27, 42, 53)
+module.TextFontSize.BorderSizePixel = 0
+module.TextFontSize.Position = UDim2.new(1.0460242, 0, 0.220535457, 0)
+module.TextFontSize.Size = UDim2.new(0.446811646, 0, 0.532550573, 0)
+module.TextFontSize.Font = Enum.Font.GothamSemibold
+module.TextFontSize.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
+module.TextFontSize.Text = "18"
+module.TextFontSize.TextColor3 = Color3.fromRGB(255, 255, 255)
+module.TextFontSize.TextScaled = true
+module.TextFontSize.TextSize = 14.000
+module.TextFontSize.TextStrokeTransparency = 0.000
+module.TextFontSize.TextWrapped = true
+module.TextFontSize:SetAttribute("NumberOnly", true)
 
 module.betainfo = Instance.new("TextLabel")
 
@@ -444,13 +445,22 @@ for i, v in ipairs(module.settingsObjects) do
 	elseif v:IsA("TextBox") then
 		local defaultValue = v.Text
 
-		if not v:GetAttribute("CanSetToEmpty") then
-			v.FocusLost:Connect(function()
+		v.FocusLost:Connect(function()
+			if not v:GetAttribute("CanSetToEmpty") then
 				if v.Text == "" or " " then
 					v.Text = defaultValue
+					return
 				end
-			end)
-		end
+			end
+			
+			if v:GetAttribute("NumberOnly") then
+				if v.Text:match("%d+") == nil then
+					v.Text = defaultValue
+				else
+					v.Text = v.Text:match("%d+")
+				end
+			end
+		end)
 	end
 end
 

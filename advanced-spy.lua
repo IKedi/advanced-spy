@@ -105,8 +105,9 @@ local function SetCamera()
 				plr.CharacterAdded:Wait()
 			end
 
-			workspace.Camera.CameraSubject = plr.Character.Humanoid
+			repeat wait() until plr.Character:FindFirstChild("Humanoid")
 
+			workspace.Camera.CameraSubject = plr.Character.Humanoid
 			local BoundFunction = EventBindings.BoundFunction
 
 			if BoundFunction ~= nil then EventBindings.BoundFunction:Disconnect() end
@@ -307,6 +308,16 @@ Gui.SettingsButton.MouseButton1Click:Connect(function()
 	else
 		Gui.SettingsPanel.Visible = true
 		Gui.ChatLog.Visible = false
+	end
+end)
+
+Gui.TextFontSize:GetPropertyChangedSignal("Text"):Connect(function()
+	if v.Text:match("%d+") == nil then return;end
+
+	for i, v in ipairs(Gui.ChatLog:GetChildren()) do
+		if v ~= Gui.UIListLayout then
+			v.TextSize = tostring(Gui.TextFontSize.Text)
+		end
 	end
 end)
 
