@@ -6,7 +6,7 @@ local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
 local PlrNum = 1
-local ClosedState = 2 --2 fully open, 0 semi open, 1 closed
+local ClosedState = 1 --2 fully open, 0 semi open, 1 closed
 
 local EventBindings = {}
 local PlayerList = {}
