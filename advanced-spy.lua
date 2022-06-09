@@ -6,7 +6,7 @@ local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
 local PlrNum = 1
-local ClosedState = 1 --2 fully open, 0 semi open, 1 closed
+local ClosedState = 2 --2 fully open, 0 semi open, 1 closed
 
 local EventBindings = {}
 local PlayerList = {}
@@ -78,6 +78,7 @@ end
 
 local function AutoFill(input)
 	local FullNameList = {}
+	filled = nil
 
 	for Name, DisplayName in pairs(PlayerList) do
 		table.insert(FullNameList, Name)
@@ -88,6 +89,10 @@ local function AutoFill(input)
 		if Gui.SearchBox.Text:lower() == Name:sub(1, Gui.SearchBox.Text:len()):lower() then
 			filled = Name
 		end
+	end
+
+	if not filled then
+		filled = Players.LocalPlayer.Name --Synapse X is being retarded so i gotta add this til it gets fixeds
 	end
 end
 
@@ -338,6 +343,9 @@ Gui.SearchBox.FocusLost:Connect(function(Enter)
 		elseif cmd == "killgui" then
 			KillGui()
 		end
+
+		Gui.SearchBox.Text = ""
+		return
 	end
 
 	if (Gui.SearchBox.Text == "" or Gui.SearchBox.Text == " ") then
