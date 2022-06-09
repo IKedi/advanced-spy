@@ -15,6 +15,9 @@ local ChatLogSize = 0
 
 local filled = nil
 local log = {}
+local rawlog = {} --I can just sort log table but thats just too much work :troll:
+
+local startTick = DateTime.now():ToLocalTime()
 
 local function KillGui()
 	for event, binding in pairs(EventBindings) do
@@ -144,6 +147,33 @@ end
 
 -----[[LOG CHAT]]-----
 
+local function saveLogs()
+	if not writefile then return;end
+
+	local saveString = ""
+	local saveTick = DateTime.now():ToLocalTime()
+	local fileName = string.format("%s.%s.%s;%s.%s.%s - %s.%s.%s;%s.%s.%s",
+									startTick.Day, startTick.Month, startTick.Year,
+									startTick.Hour, startTick.Minute, startTick.Second,
+
+									saveTick.Day, saveTick.Month, saveTick.Year,
+									saveTick.Hour, saveTick.Minute, saveTick.Second
+								)
+
+	for i, v in ipairs(rawlog) do
+		local dateData = string.format("%s:%s:%s:%s",
+									v.time.Hour, v.time.Minute,
+									v.time.Second, v.time.Millisecond
+								)
+
+		saveString = saveString..string.format("[%s] - [%s]: %s\n",
+									dateData, v.player, v.message)
+	end
+
+	writefile("("..fileName..").json", game:GetService("HttpService"):JSONEncode(rawlog))
+	writefile("("..fileName..").txt", saveString)
+end
+
 local function CalculateSize()
 	local size = Gui.UIListLayout.AbsoluteContentSize.Y + 1
 	local scroll = false
@@ -185,10 +215,19 @@ local function CreateMsgObject(plr, msg, color)
 	local UsernameText = ""
 	local initialized = false
 
+	local rawLogTable = {
+		message = msg,
+		time = DateTime.now():ToLocalTime(),
+		player = plr.Name
+	}
+
 	local logTable = log[plr.Name]
+	
+	table.insert(rawlog, rawLogTable)
 	table.insert(logTable, {
 		instance = ChatObject,
-		message = msg
+		message = msg,
+		time = DateTime.now():ToLocalTime()
 	})
 
 	log[plr.Name] = logTable
@@ -262,6 +301,8 @@ Gui.Next.MouseButton1Down:Connect(function()
 end)
 
 Gui.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+	if Gui.SearchBox.Text:sub(1, 1) == "!" then return;end
+
 	if (Gui.SearchBox.Text == "" or Gui.SearchBox.Text == " ") then
 		Gui.Autofill.Text = ""
 	else
@@ -272,6 +313,32 @@ end)
 
 Gui.SearchBox.FocusLost:Connect(function(Enter)
 	if not Enter then return;end
+
+	if Gui.SearchBox.Text:sub(1, 1) == "!" then
+		local cmd = Gui.SearchBox.Text:sub(2):lower()
+
+		if cmd == "save" or cmd == "s" then
+			saveLogs()
+		elseif cmd == "clear" or cmd == "c" or cmd == "cls" then
+			local newLog = {}
+
+			for i, v in ipairs(Players:GetPlayers()) do
+				newLog[v.Name] = {}
+			end
+
+			log = newLog
+
+			for i, v in ipairs(Gui.ChatLog:GetChildren()) do
+				if v ~= Gui.UIListLayout then
+					v:Destroy()
+				end
+			end
+
+			CalculateSize()
+		elseif cmd == "killgui" then
+			KillGui()
+		end
+	end
 
 	if (Gui.SearchBox.Text == "" or Gui.SearchBox.Text == " ") then
 		PlrNum = 1
