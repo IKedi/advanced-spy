@@ -2,8 +2,10 @@ local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/adv
 local ChatSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/IKedi/advanced-spy/beta/messagesystem.lua"))()
 Gui.load(game:HttpGet("https://api.github.com/repos/IKedi/advanced-spy/commits/beta")) --Loads save file thingy, i should move this to the gui module
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
 local PlrNum = 1
 local ClosedState = 1 --2 fully open, 0 semi open, 1 closed
@@ -18,6 +20,9 @@ local log = {}
 local rawlog = {} --I can just sort log table but thats just too much work :troll:
 
 local startTick = DateTime.now():ToLocalTime()
+
+repeat wait() until ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+local messageDoneFiltering = ReplicatedStorage.DefaultChatSystemChatEvents:WaitForChild("OnMessageDoneFiltering")
 
 local function KillGui()
 	for event, binding in pairs(EventBindings) do
@@ -252,7 +257,6 @@ local function CreateMsgObject(plr, msg, color)
 	end
 
 	local function ShowName()
-		if not Gui.DisplayNameonHover:GetAttribute("Checked") and initialized then return;end
 		for i, v in ipairs(Players:GetPlayers()) do
 			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.Name))
 		end
@@ -263,7 +267,6 @@ local function CreateMsgObject(plr, msg, color)
 	end
 
 	local function ShowDisplayName()
-		if not Gui.DisplayNameonHover:GetAttribute("Checked") then return;end
 		for i, v in ipairs(Players:GetPlayers()) do
 			EditedMessage = msg:gsub(v.Name, ([[<font color="rgb(%s)"><i>%s</i></font>]]):format(tostring(getPlrColor(v)), v.DisplayName))
 		end
@@ -273,8 +276,10 @@ local function CreateMsgObject(plr, msg, color)
 		ApplyText()
 	end
 
-	ChatObject.MouseEnter:Connect(ShowDisplayName)
-	ChatObject.MouseLeave:Connect(ShowName)
+	if Gui.DisplayNameonHover:GetAttribute("Checked") then
+		ChatObject.MouseEnter:Connect(ShowDisplayName)
+		ChatObject.MouseLeave:Connect(ShowName)
+	end
 
 	ChatObject.MouseButton1Click:Connect(function()
 		Gui.SearchBox.Text = plr.Name
@@ -342,6 +347,12 @@ Gui.SearchBox.FocusLost:Connect(function(Enter)
 			CalculateSize()
 		elseif cmd == "killgui" then
 			KillGui()
+		elseif cmd == "debug" then
+			print("Advanced spy debug start")
+			for i, _ in pairs(EventBindings) do
+				print(" -", i)
+			end
+			print("Advanced spy debug end")
 		end
 
 		Gui.SearchBox.Text = ""
@@ -401,7 +412,6 @@ local function updateChatName(plr, leaving)
 	if leaving == nil then leaving = false;end
 
 	for i, msgObject in ipairs(log[plr.Name]) do
-
 		if not leaving then --even though plr still exists it isn't in Players
 			name = string.format([[<font color="rgb(%s)">[%s]:</font> ]], tostring(getPlrColor(plr)), plr.Name)
 		else
@@ -409,6 +419,7 @@ local function updateChatName(plr, leaving)
 		end
 
 		msgObject.instance.Text = name..msgObject.message
+		RunService.RenderStepped:Wait()
 	end
 end
 
@@ -419,11 +430,7 @@ local function PlayerAdded(plr)
 		updateChatName(plr)
 	end
 
-	plr.Chatted:Connect(function(msg)
-		ChatSystem.OnChat(plr, msg, CreateMsgObject, Gui)
-	end)
-
-	plr:GetPropertyChangedSignal("Team"):Connect(function()
+	EventBindings[string.format("pEvent_%s_TeamChanged", plr.UserId)] = plr:GetPropertyChangedSignal("Team"):Connect(function()
 		updateChatName(plr)
 	end)
 
@@ -433,14 +440,30 @@ end
 local function PlayerRemoving(plr)
 	PlayerList[plr.Name] = nil --If we don't do this they will still appear on autofill thingy
 
+	for name, event in pairs(EventBindings) do
+		if name:sub(0, 7) == "pEvent_" then
+			if name:split("_")[2] == tostring(plr.UserId) then
+				event:Disconnect()
+			end
+		end
+	end
+
 	updateChatName(plr, true)
 	SetButtonVisibility()
+end
+
+local function chatMessage(msg)
+	local plr = Players:FindFirstChild(msg.FromSpeaker)
+	msg = msg.Message or "[Message failed to load]"
+
+	ChatSystem.OnChat(plr, msg, CreateMsgObject, Gui)
 end
 
 for _, plr in ipairs(Players:GetPlayers()) do
 	PlayerAdded(plr)
 end
 
+EventBindings.remLis = OnMessageDoneFiltering.OnClientEvent:Connect(chatMessage)
 EventBindings.cgCD = game:GetService("CoreGui").ChildAdded:Connect(CheckNewGui)
 EventBindings.uisIB = UserInputService.InputBegan:Connect(KeyPressed)
 EventBindings.pPA = Players.PlayerAdded:Connect(PlayerAdded)
