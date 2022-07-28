@@ -463,7 +463,7 @@ for _, plr in ipairs(Players:GetPlayers()) do
 	PlayerAdded(plr)
 end
 
-EventBindings.remLis = MessageDoneFiltering.OnClientEvent:Connect(chatMessage)
+EventBindings.remLis = messageDoneFiltering.OnClientEvent:Connect(chatMessage)
 EventBindings.cgCD = game:GetService("CoreGui").ChildAdded:Connect(CheckNewGui)
 EventBindings.uisIB = UserInputService.InputBegan:Connect(KeyPressed)
 EventBindings.pPA = Players.PlayerAdded:Connect(PlayerAdded)
